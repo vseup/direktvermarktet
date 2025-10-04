@@ -9,3 +9,17 @@ It promotes transparency and fair pricing, and helps consumers make informed, lo
 
 - **API:** Nuxt.js  
 - **Frontend:** Vite + Vue 3 (Composition API)
+
+---
+
+## 🚀 Getting Started
+
+1. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+2. **Start Backend and Frontend Development Servers**:
+   ```bash
+   npm run dev
+   ```

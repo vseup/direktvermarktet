@@ -1,0 +1,14 @@
+{
+  "name": "direktvermarktet",
+  "private": true,
+  "workspaces": [
+    "direktvermarktet-api",
+    "direktvermarktet-client"
+  ],
+  "scripts": {
+    "dev": "concurrently -r \"npm run start:dev --workspace=direktvermarktet-api\" \"npm run dev --workspace=direktvermarktet-client\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}
