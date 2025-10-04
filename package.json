@@ -6,7 +6,11 @@
     "direktvermarktet-client"
   ],
   "scripts": {
-    "dev": "concurrently -r \"npm run start:dev --workspace=direktvermarktet-api\" \"npm run dev --workspace=direktvermarktet-client\""
+    "dev": "./scripts/dev.sh",
+    "db:dev:push": "prisma db push --env-file .env.dev",
+    "db:dev:seed": "prisma db seed --env-file .env.dev",
+    "db:dev:reset": "prisma migrate reset --force --env-file .env.dev",
+    "db:prod:migrate": "prisma migrate deploy --env-file .env"
   },
   "devDependencies": {
     "concurrently": "^9.0.0"
