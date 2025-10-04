@@ -19,6 +19,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "db:dev:migrate": "dotenv -e .env.dev -- npx prisma migrate dev",
+    "db:dev:deploy": "dotenv -e .env.dev -- npx prisma migrate deploy",
     "db:dev:push": "dotenv -e .env.dev -- npx prisma db push"
   },
   "dependencies": {
