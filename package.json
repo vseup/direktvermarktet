@@ -6,11 +6,7 @@
     "direktvermarktet-client"
   ],
   "scripts": {
-    "dev": "./scripts/dev.sh",
-    "db:dev:push": "prisma db push --env-file .env.dev",
-    "db:dev:seed": "prisma db seed --env-file .env.dev",
-    "db:dev:reset": "prisma migrate reset --force --env-file .env.dev",
-    "db:prod:migrate": "prisma migrate deploy --env-file .env"
+    "dev": "./scripts/dev.sh"
   },
   "devDependencies": {
     "concurrently": "^9.0.0"

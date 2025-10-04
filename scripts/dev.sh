@@ -10,4 +10,4 @@ concurrently -r \
   "npm run dev --workspace=direktvermarktet-client"
 
 echo "🧹 stopping docker containers..."
-docker compose down
+docker compose down -v

@@ -13,3 +13,126 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model Location {
+  id            Int           @id @default(autoincrement())
+  street        String
+  houseNumber   String        @map("house_number")
+  postalCode    String        @map("postal_code")
+  city          String
+  country       String
+  googleMapsUrl String        @map("google_maps_url")
+  Farm          Farm[]
+  FarmShop      FarmShop[]
+  OpeningHour   OpeningHour[]
+
+  @@map("locations")
+}
+
+model Farm {
+  id           Int         @id @default(autoincrement())
+  name         String
+  slogan       String
+  description  String
+  url          String
+  addressId    Int         @map("address_id")
+  address      Location    @relation(fields: [addressId], references: [id])
+  previewId    Int         @map("preview_id")
+  previewImage Image       @relation(fields: [previewId], references: [id])
+  FarmImage    FarmImage[]
+  FarmShop     FarmShop[]
+
+  @@map("farms")
+}
+
+model FarmShop {
+  id                Int                 @id @default(autoincrement())
+  name              String
+  slogan            String
+  description       String
+  url               String
+  addressId         Int                 @map("address_id")
+  address           Location            @relation(fields: [addressId], references: [id])
+  previewId         Int                 @map("preview_id")
+  previewImage      Image               @relation(fields: [previewId], references: [id])
+  farmShopImage     FarmShopImage[]
+  farmId            Int                 @map("farm_id")
+  farm              Farm                @relation(fields: [farmId], references: [id])
+  FarmShopSalesMode FarmShopSalesMode[]
+
+  @@map("farm_shops")
+}
+
+model Image {
+  id            Int             @id @default(autoincrement())
+  path          String
+  Farm          Farm[]
+  FarmImage     FarmImage[]
+  FarmShop      FarmShop[]
+  FarmShopImage FarmShopImage[]
+
+  @@map("images")
+}
+
+model FarmImage {
+  farmId  Int   @map("farm_id")
+  farm    Farm  @relation(fields: [farmId], references: [id])
+  imageId Int   @map("image_id")
+  image   Image @relation(fields: [imageId], references: [id])
+
+  @@id([farmId, imageId])
+  @@map("farm_image")
+}
+
+model FarmShopImage {
+  farmShopId Int      @map("farm_id")
+  farmShop   FarmShop @relation(fields: [farmShopId], references: [id])
+  imageId    Int      @map("image_id")
+  image      Image    @relation(fields: [imageId], references: [id])
+
+  @@id([farmShopId, imageId])
+  @@map("farm_shop_image")
+}
+
+model OpeningHour {
+  id                           Int                            @id @default(autoincrement())
+  dayOfWeek                    Int
+  openTime                     String
+  closeTime                    String
+  Location                     Location?                      @relation(fields: [locationId], references: [id])
+  locationId                   Int?
+  FarmShopSalesModeOpeningHour FarmShopSalesModeOpeningHour[]
+
+  @@map("opening_hours")
+}
+
+model FarmShopSalesModeOpeningHour {
+  farmShopSalesModeId Int               @map("farm_shop_sales_mode_id")
+  farmShopSalesMode   FarmShopSalesMode @relation(fields: [farmShopSalesModeId], references: [id])
+  openingHourId       Int               @map("opening_hour_id")
+  openingHour         OpeningHour       @relation(fields: [openingHourId], references: [id])
+
+  @@id([farmShopSalesModeId, openingHourId])
+  @@map("farm_shop_sales_mode_opening_hour")
+}
+
+model SalesMode {
+  id                Int                 @id @default(autoincrement())
+  name              String
+  FarmShopSalesMode FarmShopSalesMode[]
+
+  @@map("sales_modes")
+}
+
+model FarmShopSalesMode {
+  id                           Int                            @id @default(autoincrement())
+  farmShopId                   Int                            @map("farm_shop_id")
+  farmShop                     FarmShop                       @relation(fields: [farmShopId], references: [id])
+  salesModeId                  Int                            @map("sales_mode_id")
+  salesMode                    SalesMode                      @relation(fields: [salesModeId], references: [id])
+  isAlwaysOpen                 Boolean                        @map("is_always_open")
+  fallback                     String?
+  FarmShopSalesModeOpeningHour FarmShopSalesModeOpeningHour[]
+
+  @@map("farm_shop_sales_mode")
+}
