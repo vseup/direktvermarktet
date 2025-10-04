@@ -14,12 +14,12 @@ It promotes transparency and fair pricing, and helps consumers make informed, lo
 
 ## 🚀 Getting Started
 
-1. **Install dependencies**:
+1. **Install Dependencies**:
    ```bash
    npm install
    ```
 
-2. **Start Backend and Frontend Development Servers**:
+2. **Start Development Database, Backend and Frontend Development Servers**:
    ```bash
    npm run dev
    ```
