@@ -4,6 +4,11 @@ set -e
 echo "starting dev database docker container..."
 docker compose up -d
 
+echo "waiting for database to be ready..."
+until docker exec direktvermarktet-dev-db mysqladmin ping -h "localhost" --silent; do
+  sleep 1
+done
+
 echo "init database..."
 npm run db:dev:deploy --workspace=direktvermarktet-api
 
