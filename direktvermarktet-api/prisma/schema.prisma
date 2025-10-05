@@ -19,8 +19,8 @@ model Location {
   houseNumber   String     @map("house_number")
   postalCode    String     @map("postal_code")
   city          String
-  country       String
-  googleMapsUrl String     @map("google_maps_url")
+  country       Country
+  googleMapsUrl String?    @map("google_maps_url")
   Farm          Farm[]
   FarmShop      FarmShop[]
 
@@ -99,4 +99,8 @@ model SalesMode {
   openingHours OpeningHour[]
 
   @@map("sales_modes")
+}
+
+enum Country {
+  GERMANY
 }

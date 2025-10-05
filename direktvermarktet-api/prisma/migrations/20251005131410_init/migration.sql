@@ -5,8 +5,8 @@ CREATE TABLE `locations` (
     `house_number` VARCHAR(191) NOT NULL,
     `postal_code` VARCHAR(191) NOT NULL,
     `city` VARCHAR(191) NOT NULL,
-    `country` VARCHAR(191) NOT NULL,
-    `google_maps_url` VARCHAR(191) NOT NULL,
+    `country` ENUM('GERMANY') NOT NULL,
+    `google_maps_url` VARCHAR(191) NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
