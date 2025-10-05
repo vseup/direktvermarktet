@@ -10,8 +10,8 @@ until docker exec direktvermarktet-dev-db mysqladmin ping -h "localhost" --silen
 done
 
 echo "init database..."
-npm run prisma:generate --workspace=direktvermarktet-api
-npm run db:dev:deploy --workspace=direktvermarktet-api
+npm run dev:prisma:generate --workspace=direktvermarktet-api
+npm run dev:prisma:migrate:deploy --workspace=direktvermarktet-api
 
 echo "starting frontend + backend..."
 concurrently -r \
