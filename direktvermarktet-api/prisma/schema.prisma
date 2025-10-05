@@ -28,14 +28,14 @@ model Location {
 }
 
 model Image {
-  id              String    @id @default(uuid())
-  path            String
-  Farm            Farm?     @relation(fields: [farmId], references: [id])
-  farmId          String?   @map("farm_id")
-  FarmPreview     Farm?     @relation("farm_preview_image")
-  FarmShopPreview FarmShop? @relation("farm_shop_preview_image")
-  FarmShop        FarmShop? @relation(fields: [farmShopId], references: [id])
-  farmShopId      String?   @map("farm_shop_id")
+  id              String     @id @default(uuid())
+  path            String     @db.VarChar(1024)
+  Farm            Farm[]
+  FarmPreview     Farm?      @relation("farm_preview_image")
+  FarmShopPreview FarmShop?  @relation("farm_shop_preview_image")
+  FarmShop        FarmShop[]
+  FarmAvatar      Farm?      @relation("farm_avatar_image")
+  FarmShopAvatar  FarmShop?  @relation("farm_shop_avatar_image")
 
   @@map("images")
 }
@@ -55,12 +55,14 @@ model Farm {
   id             String     @id @default(uuid())
   name           String
   slogan         String
-  description    String
-  url            String     @unique
+  description    String     @db.VarChar(2000)
+  url            String?    @unique
   location       Location   @relation(fields: [locationId], references: [id])
   locationId     String     @unique @map("location_id")
-  previewImage   Image      @relation("farm_preview_image", fields: [previewImageId], references: [id])
-  previewImageId String     @unique @map("preview_image_id")
+  previewImage   Image?     @relation("farm_preview_image", fields: [previewImageId], references: [id])
+  previewImageId String?    @unique @map("preview_image_id")
+  avatarImage    Image?     @relation("farm_avatar_image", fields: [avatarImageId], references: [id])
+  avatarImageId  String?    @unique @map("avatar_image_id")
   images         Image[]
   shops          FarmShop[]
 
@@ -71,16 +73,19 @@ model FarmShop {
   id             String      @id @default(uuid())
   name           String
   slogan         String
-  description    String
-  url            String      @unique
+  description    String      @db.VarChar(2000)
+  url            String?     @unique
   location       Location    @relation(fields: [locationId], references: [id])
   locationId     String      @unique @map("location_id")
-  previewImage   Image       @relation("farm_shop_preview_image", fields: [previewImageId], references: [id])
-  previewImageId String      @unique @map("preview_image_id")
+  previewImage   Image?      @relation("farm_shop_preview_image", fields: [previewImageId], references: [id])
+  previewImageId String?     @unique @map("preview_image_id")
+  avatarImage    Image?      @relation("farm_shop_avatar_image", fields: [avatarImageId], references: [id])
+  avatarImageId  String?     @unique @map("avatar_image_id")
   images         Image[]
   salesModes     SalesMode[]
   Farm           Farm        @relation(fields: [farmId], references: [id])
   farmId         String      @map("farm_id")
+  products       String      @db.VarChar(1024)
 
   @@map("farm_shops")
 }
@@ -93,5 +98,5 @@ model SalesMode {
   farmShopId   String        @map("farm_shop_id")
   openingHours OpeningHour[]
 
-  @@map("sales_mode")
+  @@map("sales_modes")
 }
