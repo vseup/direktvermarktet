@@ -54,10 +54,10 @@ CREATE TABLE "farm_shops" (
     "slogan" TEXT NOT NULL,
     "description" VARCHAR(2000) NOT NULL,
     "url" TEXT,
+    "farm_id" TEXT NOT NULL,
     "location_id" TEXT NOT NULL,
     "preview_image_id" TEXT,
     "avatar_image_id" TEXT,
-    "farm_id" TEXT NOT NULL,
     "products" VARCHAR(1024) NOT NULL,
 
     CONSTRAINT "farm_shops_pkey" PRIMARY KEY ("id")
@@ -132,6 +132,9 @@ ALTER TABLE "farms" ADD CONSTRAINT "farms_preview_image_id_fkey" FOREIGN KEY ("p
 ALTER TABLE "farms" ADD CONSTRAINT "farms_avatar_image_id_fkey" FOREIGN KEY ("avatar_image_id") REFERENCES "images"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "farm_shops" ADD CONSTRAINT "farm_shops_farm_id_fkey" FOREIGN KEY ("farm_id") REFERENCES "farms"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "farm_shops" ADD CONSTRAINT "farm_shops_location_id_fkey" FOREIGN KEY ("location_id") REFERENCES "locations"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -139,9 +142,6 @@ ALTER TABLE "farm_shops" ADD CONSTRAINT "farm_shops_preview_image_id_fkey" FOREI
 
 -- AddForeignKey
 ALTER TABLE "farm_shops" ADD CONSTRAINT "farm_shops_avatar_image_id_fkey" FOREIGN KEY ("avatar_image_id") REFERENCES "images"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "farm_shops" ADD CONSTRAINT "farm_shops_farm_id_fkey" FOREIGN KEY ("farm_id") REFERENCES "farms"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "sales_modes" ADD CONSTRAINT "sales_modes_farm_shop_id_fkey" FOREIGN KEY ("farm_shop_id") REFERENCES "farm_shops"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

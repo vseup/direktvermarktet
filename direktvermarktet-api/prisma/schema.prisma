@@ -14,15 +14,15 @@ datasource db {
 }
 
 model Location {
-  id            String     @id @default(uuid())
+  id            String    @id @default(uuid())
   street        String
-  houseNumber   String     @map("house_number")
-  postalCode    String     @map("postal_code")
+  houseNumber   String    @map("house_number")
+  postalCode    String    @map("postal_code")
   city          String
   country       Country
-  googleMapsUrl String?    @map("google_maps_url")
-  Farm          Farm[]
-  FarmShop      FarmShop[]
+  googleMapsUrl String?   @map("google_maps_url")
+  Farm          Farm?
+  FarmShop      FarmShop?
 
   @@map("locations")
 }
@@ -75,6 +75,8 @@ model FarmShop {
   slogan         String
   description    String      @db.VarChar(2000)
   url            String?     @unique
+  Farm           Farm        @relation(fields: [farmId], references: [id])
+  farmId         String      @map("farm_id")
   location       Location    @relation(fields: [locationId], references: [id])
   locationId     String      @unique @map("location_id")
   previewImage   Image?      @relation("farm_shop_preview_image", fields: [previewImageId], references: [id])
@@ -83,8 +85,6 @@ model FarmShop {
   avatarImageId  String?     @unique @map("avatar_image_id")
   images         Image[]
   salesModes     SalesMode[]
-  Farm           Farm        @relation(fields: [farmId], references: [id])
-  farmId         String      @map("farm_id")
   products       String      @db.VarChar(1024)
 
   @@map("farm_shops")
