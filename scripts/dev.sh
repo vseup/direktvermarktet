@@ -12,6 +12,7 @@ done
 echo "init database..."
 npm run dev:prisma:generate --workspace=direktvermarktet-api
 npm run dev:prisma:migrate:deploy --workspace=direktvermarktet-api
+npm run dev:prisma:seed --workspace=direktvermarktet-api
 
 echo "starting frontend + backend..."
 concurrently -r \

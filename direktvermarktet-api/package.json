@@ -20,7 +20,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "dev:prisma:generate": "dotenv -e .env.dev -- npx prisma generate",
     "dev:prisma:migrate:dev": "dotenv -e .env.dev -- npx prisma migrate dev",
-    "dev:prisma:migrate:deploy": "dotenv -e .env.dev -- npx prisma migrate deploy"
+    "dev:prisma:migrate:deploy": "dotenv -e .env.dev -- npx prisma migrate deploy",
+    "dev:prisma:seed": "dotenv -e .env.dev -- npx prisma db seed"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -35,6 +36,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.18.0",
+    "@faker-js/faker": "^10.0.0",
     "@nestjs/cli": "^11.0.0",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.1",
@@ -76,5 +78,8 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   }
 }
