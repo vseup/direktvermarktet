@@ -2,14 +2,33 @@ import { Injectable } from '@nestjs/common';
 import { CreateFarmDto } from './dto/create-farm.dto';
 import { UpdateFarmDto } from './dto/update-farm.dto';
 import { PrismaService } from 'prisma/prisma.service';
+import { Farm } from '@prisma/client';
 
 @Injectable()
 export class FarmsService {
 
   constructor(private prisma: PrismaService) { }
 
-  create(data: CreateFarmDto) {
-    return this.prisma.farm.create({ data });
+  async create(createFarmDto: CreateFarmDto): Promise<Farm> {
+    return this.prisma.farm.create({
+      data: {
+        ...createFarmDto,
+        location: {
+          create: createFarmDto.location
+        },
+        previewImage: {
+          create: createFarmDto.previewImage
+        },
+        avatarImage: {
+          create: createFarmDto.avatarImage
+        }
+      },
+      include: {
+        location: true,
+        previewImage: true,
+        avatarImage: true
+      }
+    });
   }
 
   findAll() {

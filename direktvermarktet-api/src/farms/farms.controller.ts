@@ -2,14 +2,21 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { FarmsService } from './farms.service';
 import { CreateFarmDto } from './dto/create-farm.dto';
 import { UpdateFarmDto } from './dto/update-farm.dto';
+import { plainToInstance } from 'class-transformer';
+import { ResponseFarmDto } from './dto/response-farm.dto';
 
 @Controller('farms')
 export class FarmsController {
-  constructor(private readonly farmsService: FarmsService) {}
+  constructor(private readonly farmsService: FarmsService) { }
 
   @Post()
-  create(@Body() createFarmDto: CreateFarmDto) {
-    return this.farmsService.create(createFarmDto);
+  async create(@Body() createFarmDto: CreateFarmDto) {
+    const farm = await this.farmsService.create(createFarmDto);
+    return plainToInstance(
+      ResponseFarmDto,
+      farm,
+      { excludeExtraneousValues: true }
+    )
   }
 
   @Get()
