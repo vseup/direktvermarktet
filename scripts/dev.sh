@@ -5,7 +5,7 @@ echo "starting dev database docker container..."
 docker compose up -d
 
 echo "waiting for database to be ready..."
-until docker exec direktvermarktet-dev-db mysqladmin ping -h "localhost" --silent; do
+until docker exec direktvermarktet-dev-db pg_isready -U root -h localhost > /dev/null 2>&1; do
   sleep 1
 done
 
@@ -19,4 +19,4 @@ concurrently -r \
   "npm run dev --workspace=direktvermarktet-client" 
   
 echo "stopping docker containers..."
-docker compose down -v
+docker compose down -v --remove-orphans
