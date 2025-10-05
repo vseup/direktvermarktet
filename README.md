@@ -7,7 +7,7 @@ It promotes transparency and fair pricing, and helps consumers make informed, lo
 
 ## Tech Stack
 
-- **API:** Nuxt.js  
+- **API:** Nest.js  
 - **Frontend:** Vite + Vue 3 (Composition API)
 
 ---
