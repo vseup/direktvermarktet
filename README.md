@@ -1,7 +1,9 @@
 # 🌾 Direktvermarktet
 
-A simple web app that connects people with local farms and producers offering fresh, regional products through direct sales.
-It promotes transparency and fair pricing, and helps consumers make informed, local, and sustainable purchasing choices.
+A simple web app that...
+- connects people with local farms which offer their products through direct sales
+- promotes transparency and fair pricing
+- helps consumers make informed, regional, and more sustainable purchasing choices
 
 ---
 
