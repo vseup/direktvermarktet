@@ -1,27 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFarmDto } from './dto/create-farm.dto';
-import { UpdateFarmDto } from './dto/update-farm.dto';
 import { PrismaService } from 'prisma/prisma.service';
-import { Farm } from '@prisma/client';
+import { FarmCreateRequest, FarmUpdateRequest, FarmResponse } from '@direktvermarktet/schemas';
 
 @Injectable()
 export class FarmsService {
 
-  constructor(private prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) { }
 
-  async create(createFarmDto: CreateFarmDto): Promise<Farm> {
+  create(request: FarmCreateRequest): Promise<FarmResponse> {
+    const previewImage = request.previewImage ? { create: request.previewImage } : undefined;
+    const avatarImage = request.avatarImage ? { create: request.avatarImage } : undefined;
     return this.prisma.farm.create({
       data: {
-        ...createFarmDto,
+        ...request,
         location: {
-          create: createFarmDto.location
+          create: request.location
         },
-        previewImage: {
-          create: createFarmDto.previewImage
-        },
-        avatarImage: {
-          create: createFarmDto.avatarImage
-        }
+        previewImage: previewImage,
+        avatarImage: avatarImage,
       },
       include: {
         location: true,
@@ -31,19 +27,65 @@ export class FarmsService {
     });
   }
 
-  findAll() {
-    return `This action returns all farms`;
+  findAll(): Promise<FarmResponse[]> {
+    return this.prisma.farm.findMany({
+      include: {
+        location: true,
+        previewImage: true,
+        avatarImage: true
+      }
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} farm`;
+  findById(id: string): Promise<FarmResponse | null> {
+    return this.prisma.farm.findUnique({
+      where: { id: id },
+      include: {
+        location: true,
+        previewImage: true,
+        avatarImage: true
+      }
+    })
   }
 
-  update(id: number, data: UpdateFarmDto) {
-    return `This action updates a #${id} farm`;
+  update(id: string, request: FarmUpdateRequest): Promise<FarmResponse> {
+    return this.prisma.farm.update({
+      where: { id: id },
+      data: { ...request },
+      include: {
+        location: true,
+        previewImage: true,
+        avatarImage: true
+      }
+    })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} farm`;
+  async remove(id: string): Promise<void> {
+    await this.prisma.$transaction(async (transaction) => {
+
+      const farm = await transaction.farm.findUnique({ where: { id: id } })
+      if (!farm) return;
+
+      const farmShops = await transaction.farmShop.findMany({ where: { farmId: id } })
+      for (const farmShop of farmShops) {
+        await transaction.farmShop.delete({ where: { id: farmShop.id } })
+        await transaction.location.delete({ where: { id: farmShop.locationId } })
+        if (farmShop.previewImageId) {
+          await transaction.image.delete({ where: { id: farmShop.previewImageId } })
+        }
+        if (farmShop.avatarImageId) {
+          await transaction.image.delete({ where: { id: farmShop.avatarImageId } })
+        }
+      }
+
+      await transaction.farm.delete({ where: { id: id } });
+      await transaction.location.delete({ where: { id: farm.locationId } })
+      if (farm.previewImageId) {
+        await transaction.image.delete({ where: { id: farm.previewImageId } })
+      }
+      if (farm.avatarImageId) {
+        await transaction.image.delete({ where: { id: farm.avatarImageId } })
+      }
+    })
   }
 }

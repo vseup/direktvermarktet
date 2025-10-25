@@ -1,34 +1,36 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete, NotFoundException } from '@nestjs/common';
 import { FarmShopsService } from './farm-shops.service';
-import { CreateFarmShopDto } from './dto/create-farm-shop.dto';
-import { UpdateFarmShopDto } from './dto/update-farm-shop.dto';
+import { type FarmShopResponse, type FarmShopCreateRequest, type FarmShopUpdateRequest } from '@direktvermarktet/schemas'
 
 @Controller('farm-shops')
 export class FarmShopsController {
-  constructor(private readonly farmShopsService: FarmShopsService) {}
+
+  constructor(private readonly farmShopsService: FarmShopsService) { }
 
   @Post()
-  create(@Body() createFarmShopDto: CreateFarmShopDto) {
-    return this.farmShopsService.create(createFarmShopDto);
+  create(@Body() request: FarmShopCreateRequest): Promise<FarmShopResponse> {
+    return this.farmShopsService.create(request);
   }
 
   @Get()
-  findAll() {
+  findAll(): Promise<FarmShopResponse[]> {
     return this.farmShopsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.farmShopsService.findOne(+id);
+  async findById(@Param('id') id: string): Promise<FarmShopResponse> {
+    const farmShop = await this.farmShopsService.findById(id);
+    if (!farmShop) throw new NotFoundException('Farmshop not found')
+    return farmShop;
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFarmShopDto: UpdateFarmShopDto) {
-    return this.farmShopsService.update(+id, updateFarmShopDto);
+  @Put(':id')
+  update(@Param('id') id: string, @Body() request: FarmShopUpdateRequest): Promise<FarmShopResponse> {
+    return this.farmShopsService.update(id, request);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.farmShopsService.remove(+id);
+  async remove(@Param('id') id: string): Promise<void> {
+    await this.farmShopsService.remove(id);
   }
 }

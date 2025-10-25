@@ -6,4 +6,4 @@ import { FarmsController } from './farms.controller';
   controllers: [FarmsController],
   providers: [FarmsService],
 })
-export class FarmsModule {}
+export class FarmsModule { }
