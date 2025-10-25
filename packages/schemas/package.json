@@ -1,0 +1,25 @@
+{
+  "name": "@direktvermarktet/schemas",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "import": "./dist/index.js"
+    }
+  },
+  "type": "commonjs",
+  "private": true,
+  "files": [
+    "dist"
+  ],
+  "description": "schemas to be shared between api and client",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "peerDependencies": {
+    "zod": "^4.1.12"
+  }
+}

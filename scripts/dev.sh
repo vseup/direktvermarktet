@@ -14,8 +14,11 @@ npm run dev:prisma:generate --workspace=direktvermarktet-api
 npm run dev:prisma:migrate:deploy --workspace=direktvermarktet-api
 npm run dev:prisma:seed --workspace=direktvermarktet-api
 
+echo "build schemas..."
+npm run --workspace @direktvermarktet/schemas build
+
 echo "starting frontend + backend..."
-concurrently -r \
+npx concurrently -r \
   "npm run start:dev --workspace=direktvermarktet-api" \
   "npm run dev --workspace=direktvermarktet-client" 
   
