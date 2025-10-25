@@ -21,8 +21,8 @@ model Location {
   city          String
   country       Country
   googleMapsUrl String?   @map("google_maps_url")
-  Farm          Farm?
-  FarmShop      FarmShop?
+  farm          Farm?
+  farmShop      FarmShop?
 
   @@map("locations")
 }
@@ -30,12 +30,12 @@ model Location {
 model Image {
   id              String     @id @default(uuid())
   path            String     @db.VarChar(1024)
-  Farm            Farm[]
-  FarmPreview     Farm?      @relation("farm_preview_image")
-  FarmShopPreview FarmShop?  @relation("farm_shop_preview_image")
-  FarmShop        FarmShop[]
-  FarmAvatar      Farm?      @relation("farm_avatar_image")
-  FarmShopAvatar  FarmShop?  @relation("farm_shop_avatar_image")
+  farm            Farm[]
+  farmPreview     Farm?      @relation("farm_preview_image")
+  farmShopPreview FarmShop?  @relation("farm_shop_preview_image")
+  farmShop        FarmShop[]
+  farmAvatar      Farm?      @relation("farm_avatar_image")
+  farmShopAvatar  FarmShop?  @relation("farm_shop_avatar_image")
 
   @@map("images")
 }
@@ -45,7 +45,7 @@ model OpeningHour {
   dayOfWeek   Int       @map("day_of_week")
   openTime    String    @map("open_time")
   closeTime   String    @map("close_time")
-  SalesMode   SalesMode @relation(fields: [salesModeId], references: [id])
+  salesMode   SalesMode @relation(fields: [salesModeId], references: [id])
   salesModeId String    @map("sales_mode_id")
 
   @@map("opening_hours")
@@ -75,7 +75,7 @@ model FarmShop {
   slogan         String
   description    String      @db.VarChar(2000)
   url            String?     @unique
-  Farm           Farm        @relation(fields: [farmId], references: [id])
+  farm           Farm        @relation(fields: [farmId], references: [id])
   farmId         String      @map("farm_id")
   location       Location    @relation(fields: [locationId], references: [id])
   locationId     String      @unique @map("location_id")
@@ -94,7 +94,7 @@ model SalesMode {
   id           String        @id @default(uuid())
   isAlwaysOpen Boolean       @map("is_always_open")
   fallback     String?
-  FarmShop     FarmShop      @relation(fields: [farmShopId], references: [id])
+  farmShop     FarmShop      @relation(fields: [farmShopId], references: [id])
   farmShopId   String        @map("farm_shop_id")
   openingHours OpeningHour[]
 
