@@ -30,6 +30,5 @@ import LayoutHeader from '@/components/layout/LayoutHeader.vue'
     width: 100%;
     max-width: var(--max-width);
     min-height: calc(100vh - var(--header-height) - var(--footer-height));
-    height: 200px;
 }
 </style>
